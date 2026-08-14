@@ -1,0 +1,2711 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conexión Real</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --green-dark: #2e7d32;
+      --green-main: #4caf50;
+      --green-light: #a5d6a7;
+      --green-pale: #e8f5e9;
+      --cream: #fafaf5;
+      --warm-white: #ffffff;
+      --text-dark: #1b2a1e;
+      --text-mid: #4a5e4d;
+      --text-soft: #8fa893;
+      --orange: #ff8f00;
+      --red-soft: #ef5350;
+      --yellow: #fdd835;
+      --purple: #9c27b0;
+      --blue: #1976d2;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 8px;
+      --shadow-card: 0 4px 20px rgba(46, 125, 50, .10);
+      --shadow-nav: 0 -2px 16px rgba(46, 125, 50, .08);
+      --font-display: 'Nunito', sans-serif;
+      --font-body: 'Quicksand', sans-serif;
+      --nav-h: 72px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html {
+      height: 100%;
+      width: 100%
+    }
+
+    body {
+      width: 100%;
+      height: 100dvh;
+      background: var(--cream);
+      font-family: var(--font-body);
+      color: var(--text-dark);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 0;
+      margin: 0
+    }
+
+    .app-shell {
+      position: relative;
+      width: 100vw;
+      height: 100dvh;
+      background: var(--cream);
+      overflow: hidden;
+      border-radius: 0;
+      box-shadow: none;
+      display: flex;
+      flex-direction: column
+    }
+
+    .screen {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+      position: absolute;
+      inset: 0;
+      bottom: var(--nav-h);
+      animation: screenIn .28s ease
+    }
+
+    .screen.active {
+      display: flex
+    }
+
+    @keyframes screenIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .screen-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.2rem .6rem;
+      background: var(--cream);
+      flex-shrink: 0
+    }
+
+    @media(max-width:480px) {
+      .screen-header {
+        padding: .8rem 1rem .5rem
+      }
+    }
+
+    @media(min-width:769px) {
+      .screen-header {
+        padding: 1.2rem 1.5rem .8rem
+      }
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 1.2rem;
+      color: var(--green-dark)
+    }
+
+    @media(max-width:480px) {
+      .header-logo {
+        font-size: 1rem
+      }
+    }
+
+    @media(min-width:769px) {
+      .header-logo {
+        font-size: 1.3rem
+      }
+    }
+
+    .logo-icon {
+      font-size: 1.4rem
+    }
+
+    .screen-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: var(--text-dark)
+    }
+
+    @media(max-width:480px) {
+      .screen-title {
+        font-size: 1.1rem
+      }
+    }
+
+    @media(min-width:769px) {
+      .screen-title {
+        font-size: 1.5rem
+      }
+    }
+
+    .icon-btn {
+      background: var(--green-pale);
+      border: none;
+      border-radius: 50%;
+      width: 38px;
+      height: 38px;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .2s
+    }
+
+    .icon-btn:hover {
+      background: var(--green-light)
+    }
+
+    .screen-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: .8rem 1.2rem 1.2rem;
+      scroll-behavior: smooth
+    }
+
+    @media(max-width:480px) {
+      .screen-body {
+        padding: .6rem 1rem 1rem
+      }
+    }
+
+    @media(min-width:769px) {
+      .screen-body {
+        padding: 1rem 1.5rem 1.5rem
+      }
+    }
+
+    .screen-body::-webkit-scrollbar {
+      width: 4px
+    }
+
+    .screen-body::-webkit-scrollbar-thumb {
+      background: var(--green-light);
+      border-radius: 4px
+    }
+
+    .greeting-card {
+      background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-main) 100%);
+      border-radius: var(--radius-lg);
+      padding: 1.2rem 1.4rem;
+      color: white;
+      margin-bottom: 1rem;
+      position: relative;
+      overflow: hidden
+    }
+
+    .greeting-card::after {
+      content: '🌿';
+      position: absolute;
+      right: 1rem;
+      bottom: .5rem;
+      font-size: 3rem;
+      opacity: .25
+    }
+
+    .greeting-sub {
+      font-size: .85rem;
+      opacity: .85
+    }
+
+    .greeting-name {
+      font-family: var(--font-display);
+      font-weight: 800;
+      margin: .1rem 0 .3rem;
+      font-size: 1.25rem
+    }
+
+    @media(max-width:480px) {
+      .greeting-name {
+        font-size: 1.15rem
+      }
+    }
+
+    @media(min-width:769px) {
+      .greeting-name {
+        font-size: 1.4rem
+      }
+    }
+
+    .greeting-desc {
+      font-size: .8rem;
+      opacity: .75
+    }
+
+    .stat-card {
+      background: var(--warm-white);
+      border-radius: var(--radius-md);
+      padding: .9rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      margin-bottom: .7rem;
+      box-shadow: var(--shadow-card)
+    }
+
+    .stat-icon {
+      font-size: 1.8rem;
+      flex-shrink: 0
+    }
+
+    .stat-info {
+      flex: 1
+    }
+
+    .stat-label {
+      font-size: .72rem;
+      color: var(--text-soft);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .04em
+    }
+
+    .stat-value {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: var(--text-dark)
+    }
+
+    .streak-dots {
+      display: flex;
+      gap: 5px
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #e0e0e0
+    }
+
+    .dot.done {
+      background: var(--orange)
+    }
+
+    .dot.active {
+      background: var(--green-main);
+      box-shadow: 0 0 0 2px var(--green-pale)
+    }
+
+    .level-badge {
+      background: var(--green-pale);
+      color: var(--green-dark);
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: .8rem;
+      padding: .3rem .7rem;
+      border-radius: 20px
+    }
+
+    .points-ring {
+      position: relative;
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0
+    }
+
+    .ring-svg {
+      width: 100%;
+      height: 100%
+    }
+
+    .ring-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .6rem;
+      font-weight: 700;
+      color: var(--green-dark)
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 1rem 0 .6rem
+    }
+
+    .section-header h3 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1rem
+    }
+
+    .link-btn {
+      background: none;
+      border: none;
+      color: var(--green-main);
+      font-weight: 700;
+      font-size: .85rem;
+      cursor: pointer;
+      font-family: var(--font-body)
+    }
+
+    .reto-mini-card {
+      background: var(--warm-white);
+      border-radius: var(--radius-md);
+      padding: .75rem .9rem;
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      margin-bottom: .6rem;
+      box-shadow: var(--shadow-card);
+      transition: transform .15s
+    }
+
+    .reto-mini-card:hover {
+      transform: translateY(-2px)
+    }
+
+    .reto-mini-icon {
+      font-size: 1.6rem;
+      flex-shrink: 0
+    }
+
+    .reto-mini-info {
+      flex: 1
+    }
+
+    .reto-mini-title {
+      font-weight: 700;
+      font-size: .9rem
+    }
+
+    .reto-mini-pts {
+      font-size: .75rem;
+      color: var(--green-main);
+      font-weight: 700
+    }
+
+    .btn-sm {
+      border: none;
+      border-radius: 20px;
+      padding: .35rem .9rem;
+      font-size: .8rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: var(--font-body);
+      transition: transform .15s, box-shadow .15s
+    }
+
+    .btn-primary {
+      background: var(--green-main);
+      color: white
+    }
+
+    .btn-primary:hover {
+      background: var(--green-dark);
+      transform: scale(1.03)
+    }
+
+    .btn-secondary {
+      background: var(--green-pale);
+      color: var(--green-dark)
+    }
+
+    .btn-secondary:hover {
+      background: var(--green-light)
+    }
+
+    .btn-block {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: .9rem;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: var(--font-display);
+      letter-spacing: .02em;
+      transition: transform .15s, box-shadow .15s;
+      margin-top: 1.2rem
+    }
+
+    .btn-block.btn-primary {
+      box-shadow: 0 6px 18px rgba(76, 175, 80, .35)
+    }
+
+    .btn-block.btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(76, 175, 80, .4)
+    }
+
+    .btn-block.btn-done {
+      background: #e8f5e9;
+      color: var(--green-dark);
+      box-shadow: none;
+      cursor: default
+    }
+
+    .btn-block.btn-locked {
+      background: #e0e0e0;
+      color: #9e9e9e;
+      box-shadow: none;
+      cursor: not-allowed;
+      position: relative
+    }
+
+    .btn-progress {
+      display: block;
+      font-size: .75rem;
+      font-weight: 600;
+      color: var(--text-soft);
+      text-align: center;
+      margin-top: .5rem
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: .5rem;
+      overflow-x: auto;
+      padding-bottom: .3rem;
+      margin-bottom: 1rem;
+      scrollbar-width: none
+    }
+
+    .filter-tabs::-webkit-scrollbar {
+      display: none
+    }
+
+    .filter-tab {
+      background: var(--green-pale);
+      border: none;
+      border-radius: 20px;
+      padding: .4rem .9rem;
+      font-size: .82rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      color: var(--text-mid);
+      font-family: var(--font-body);
+      transition: background .2s, color .2s
+    }
+
+    .filter-tab.active {
+      background: var(--green-main);
+      color: white
+    }
+
+    .reto-card {
+      background: var(--warm-white);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: .8rem;
+      box-shadow: var(--shadow-card);
+      cursor: pointer;
+      transition: transform .15s;
+      border-left: 4px solid transparent
+    }
+
+    .reto-card:hover {
+      transform: translateY(-2px)
+    }
+
+    .reto-card.done {
+      border-left-color: var(--green-main);
+      opacity: .75
+    }
+
+    .reto-card-emoji {
+      font-size: 2rem;
+      flex-shrink: 0
+    }
+
+    .reto-card-info {
+      flex: 1
+    }
+
+    .reto-card-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: .92rem;
+      margin-bottom: .1rem
+    }
+
+    .reto-card-desc {
+      font-size: .76rem;
+      color: var(--text-soft)
+    }
+
+    .reto-card-pts {
+      font-size: .78rem;
+      font-weight: 700;
+      color: var(--green-main);
+      margin-top: .2rem
+    }
+
+    .reto-done-badge {
+      font-size: 1.3rem
+    }
+
+    .reto-hero {
+      font-size: 5rem;
+      text-align: center;
+      display: block;
+      margin: 1rem 0;
+      animation: heroIn .4s ease
+    }
+
+    @keyframes heroIn {
+      from {
+        transform: scale(.5);
+        opacity: 0
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1
+      }
+    }
+
+    .reto-detalle-title {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 1.5rem;
+      text-align: center;
+      margin-bottom: .5rem
+    }
+
+    .reto-detalle-desc {
+      text-align: center;
+      color: var(--text-mid);
+      font-size: .9rem;
+      margin-bottom: 1rem
+    }
+
+    .reto-steps-card {
+      background: var(--warm-white);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.1rem;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 1rem
+    }
+
+    .reto-steps-card h4 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      margin-bottom: .7rem
+    }
+
+    .reto-steps {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem
+    }
+
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: .6rem;
+      font-size: .88rem;
+      padding: .5rem;
+      border-radius: var(--radius-sm);
+      transition: background .2s
+    }
+
+    .step-item.has-photo {
+      background: var(--green-pale)
+    }
+
+    .step-check {
+      font-size: .9rem;
+      flex-shrink: 0;
+      margin-top: .1rem
+    }
+
+    .step-content {
+      flex: 1
+    }
+
+    .step-text {
+      display: block;
+      margin-bottom: .4rem
+    }
+
+    .step-photo-area {
+      margin-top: .4rem
+    }
+
+    .step-photo-preview {
+      width: 100%;
+      max-height: 120px;
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+      margin-top: .3rem;
+      display: none
+    }
+
+    .step-photo-preview.show {
+      display: block
+    }
+
+    .photo-upload-btn {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      background: var(--green-pale);
+      border: 1.5px dashed var(--green-light);
+      border-radius: var(--radius-sm);
+      padding: .35rem .7rem;
+      font-size: .75rem;
+      font-weight: 700;
+      color: var(--green-dark);
+      cursor: pointer;
+      font-family: var(--font-body);
+      transition: background .2s
+    }
+
+    .photo-upload-btn:hover {
+      background: var(--green-light)
+    }
+
+    .photo-upload-btn input {
+      display: none
+    }
+
+    .reto-pts-badge {
+      background: linear-gradient(135deg, var(--green-main), var(--green-dark));
+      color: white;
+      border-radius: 20px;
+      padding: .4rem 1.2rem;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1rem;
+      display: flex;
+      justify-content: center;
+      margin-top: .8rem
+    }
+
+    .reto-intro-card {
+      background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+      border-left: 4px solid var(--green-main);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.1rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow-card)
+    }
+
+    .reto-intro-card .intro-label {
+      font-size: .7rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--green-dark);
+      letter-spacing: .05em;
+      margin-bottom: .4rem
+    }
+
+    .reto-intro-card p {
+      font-size: .9rem;
+      color: var(--text-mid);
+      line-height: 1.5;
+      font-style: italic
+    }
+
+    .reto-questions-card {
+      background: linear-gradient(135deg, #fff8e1, #fffde7);
+      border-left: 4px solid var(--yellow);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.1rem;
+      margin-top: 1rem;
+      box-shadow: none;
+      border: 1.5px solid #ffe082
+    }
+
+    .reto-questions-card .q-label {
+      font-size: .7rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #f57f17;
+      letter-spacing: .05em;
+      margin-bottom: .6rem
+    }
+
+    .reto-questions-card .q-label span {
+      font-size: 1rem;
+      margin-right: .3rem
+    }
+
+    .reto-questions-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .6rem
+    }
+
+    .reto-questions-list li {
+      display: flex;
+      gap: .5rem;
+      font-size: .88rem;
+      color: var(--text-dark);
+      line-height: 1.45
+    }
+
+    .reto-questions-list li::before {
+      content: '💬';
+      font-size: .85rem;
+      flex-shrink: 0;
+      margin-top: .05rem
+    }
+
+    .section-label {
+      font-size: .75rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--text-soft);
+      letter-spacing: .06em;
+      margin-bottom: .6rem
+    }
+
+    .members-row {
+      display: flex;
+      gap: .8rem;
+      overflow-x: auto;
+      padding-bottom: .3rem;
+      scrollbar-width: none
+    }
+
+    .members-row::-webkit-scrollbar {
+      display: none
+    }
+
+    .member-avatar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .3rem;
+      flex-shrink: 0
+    }
+
+    .member-avatar p {
+      font-size: .72rem;
+      font-weight: 700;
+      color: var(--text-mid)
+    }
+
+    .avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 1.2rem;
+      color: white
+    }
+
+    .av-green {
+      background: linear-gradient(135deg, #43a047, #1b5e20)
+    }
+
+    .av-blue {
+      background: linear-gradient(135deg, #42a5f5, #1565c0)
+    }
+
+    .av-pink {
+      background: linear-gradient(135deg, #ec407a, #880e4f)
+    }
+
+    .av-yellow {
+      background: linear-gradient(135deg, #ffca28, #f57f17);
+      color: #1b2a1e
+    }
+
+    .av-purple {
+      background: linear-gradient(135deg, #ab47bc, #6a1b9a)
+    }
+
+    .av-orange {
+      background: linear-gradient(135deg, #ffa726, #e65100)
+    }
+
+    .av-add {
+      background: var(--green-pale);
+      color: var(--green-dark);
+      font-size: 1.6rem;
+      border: 2px dashed var(--green-light)
+    }
+
+    .calendar-card {
+      background: var(--warm-white);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      box-shadow: var(--shadow-card)
+    }
+
+    .cal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-display);
+      font-weight: 800;
+      margin-bottom: .8rem
+    }
+
+    .cal-nav {
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: var(--green-dark);
+      padding: .2rem .5rem
+    }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      text-align: center
+    }
+
+    .cal-day-name {
+      font-size: .68rem;
+      color: var(--text-soft);
+      font-weight: 700;
+      padding: .2rem 0
+    }
+
+    .cal-day {
+      font-size: .78rem;
+      font-weight: 600;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: auto;
+      cursor: pointer;
+      transition: background .15s;
+      position: relative
+    }
+
+    .cal-day:hover {
+      background: var(--green-pale)
+    }
+
+    .cal-day.today {
+      background: var(--green-main);
+      color: white;
+      font-weight: 800
+    }
+
+    .cal-day.reto1 {
+      background: #fff3e0;
+      color: #e65100
+    }
+
+    .cal-day.reto2 {
+      background: #e8f5e9;
+      color: #1b5e20
+    }
+
+    .cal-day.completado {
+      background: var(--green-main);
+      color: white;
+      font-weight: 800
+    }
+
+    .cal-day.empty {
+      visibility: hidden
+    }
+
+    .cal-day.agendado {
+      background: #fff3e0;
+      color: #bf360c;
+      font-weight: 700
+    }
+
+    .cal-dot {
+      position: absolute;
+      bottom: 1px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--orange)
+    }
+
+    .cal-legend {
+      display: flex;
+      gap: .8rem;
+      margin-top: .6rem;
+      flex-wrap: wrap
+    }
+
+    .cal-legend-item {
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+      font-size: .68rem;
+      color: var(--text-mid)
+    }
+
+    .cal-legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%
+    }
+
+    .completed-banner {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      background: var(--green-pale);
+      border-radius: var(--radius-md);
+      padding: .8rem 1rem;
+      margin-top: .8rem;
+      font-size: .88rem;
+      color: var(--text-mid)
+    }
+
+    .completed-banner strong {
+      color: var(--green-dark)
+    }
+
+    /* agenda modal */
+    .agenda-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .5);
+      z-index: 600;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center
+    }
+
+    .agenda-modal.hidden {
+      display: none
+    }
+
+    .agenda-sheet {
+      background: var(--warm-white);
+      border-radius: 24px 24px 0 0;
+      padding: 1.4rem 1.2rem 2rem;
+      width: 100%;
+      max-width: 560px;
+      max-height: 78dvh;
+      overflow-y: auto;
+      animation: slideUp .3s ease
+    }
+
+    .agenda-sheet h3 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.1rem;
+      margin-bottom: .2rem
+    }
+
+    .agenda-date-lbl {
+      font-size: .82rem;
+      color: var(--text-soft);
+      margin-bottom: 1rem
+    }
+
+    .agenda-retos-list {
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+      margin-bottom: 1rem
+    }
+
+    .agenda-reto-item {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      background: var(--cream);
+      border-radius: var(--radius-md);
+      padding: .7rem .85rem;
+      cursor: pointer;
+      transition: background .15s;
+      border: 2px solid transparent
+    }
+
+    .agenda-reto-item:hover {
+      background: var(--green-pale)
+    }
+
+    .agenda-reto-item.selected {
+      background: var(--green-pale);
+      border-color: var(--green-main)
+    }
+
+    .agenda-reto-em {
+      font-size: 1.5rem;
+      flex-shrink: 0
+    }
+
+    .agenda-reto-info {
+      flex: 1
+    }
+
+    .agenda-reto-title {
+      font-weight: 700;
+      font-size: .88rem
+    }
+
+    .agenda-reto-pts {
+      font-size: .73rem;
+      color: var(--green-main);
+      font-weight: 700
+    }
+
+    .agenda-actions {
+      display: flex;
+      gap: .6rem
+    }
+
+    .agenda-actions button {
+      flex: 1;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: .75rem;
+      font-size: .9rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: var(--font-body)
+    }
+
+    .agenda-btn-cancel {
+      background: var(--green-pale);
+      color: var(--green-dark)
+    }
+
+    .agenda-btn-save {
+      background: var(--green-main);
+      color: white
+    }
+
+    .agenda-btn-remove {
+      background: #ffebee;
+      color: var(--red-soft)
+    }
+
+    .achievement-banner {
+      background: linear-gradient(135deg, #fff8e1, #fff3e0);
+      border: 2px solid var(--yellow);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      margin-bottom: 1.2rem
+    }
+
+    .ach-icon {
+      font-size: 2.2rem
+    }
+
+    .ach-label {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: .95rem
+    }
+
+    .ach-desc {
+      font-size: .8rem;
+      color: var(--text-mid)
+    }
+
+    .logros-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .8rem
+    }
+
+    .logro-card {
+      background: var(--warm-white);
+      border-radius: var(--radius-md);
+      padding: 1rem .8rem;
+      text-align: center;
+      box-shadow: var(--shadow-card);
+      transition: transform .15s
+    }
+
+    .logro-card:hover {
+      transform: translateY(-2px)
+    }
+
+    .logro-card.locked {
+      opacity: .45;
+      filter: grayscale(.6)
+    }
+
+    .logro-emoji {
+      font-size: 2.4rem;
+      margin-bottom: .4rem;
+      display: block
+    }
+
+    .logro-name {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: .85rem;
+      margin-bottom: .15rem
+    }
+
+    .logro-desc {
+      font-size: .72rem;
+      color: var(--text-soft)
+    }
+
+    .logro-pts {
+      font-size: .72rem;
+      color: var(--green-main);
+      font-weight: 700;
+      margin-top: .3rem
+    }
+
+    .perfil-hero {
+      text-align: center;
+      padding: 1.2rem 0 1rem
+    }
+
+    .perfil-avatar {
+      position: relative;
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--green-main), var(--green-dark));
+      color: white;
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto .7rem;
+      box-shadow: 0 6px 20px rgba(76, 175, 80, .35);
+      cursor: pointer;
+      overflow: hidden
+    }
+
+    .perfil-avatar-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: none
+    }
+
+    .perfil-avatar-img.show {
+      display: block
+    }
+
+    .perfil-avatar-edit {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--orange);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .8rem;
+      border: 2px solid var(--warm-white);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, .25)
+    }
+
+    .perfil-hero h3 {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 1.3rem
+    }
+
+    .perfil-nivel {
+      display: inline-block;
+      margin-top: .3rem;
+      background: var(--green-pale);
+      color: var(--green-dark);
+      font-size: .8rem;
+      font-weight: 700;
+      padding: .25rem .9rem;
+      border-radius: 20px
+    }
+
+    .stats-row {
+      display: flex;
+      gap: .7rem;
+      margin-bottom: 1.2rem
+    }
+
+    .stat-pill {
+      flex: 1;
+      background: var(--warm-white);
+      border-radius: var(--radius-md);
+      padding: .8rem .5rem;
+      text-align: center;
+      box-shadow: var(--shadow-card)
+    }
+
+    .stat-pill-val {
+      display: block;
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: var(--green-dark)
+    }
+
+    .stat-pill-lbl {
+      font-size: .7rem;
+      color: var(--text-soft);
+      font-weight: 600
+    }
+
+    .perfil-menu {
+      display: flex;
+      flex-direction: column;
+      gap: .5rem
+    }
+
+    .perfil-menu-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--warm-white);
+      border: none;
+      border-radius: var(--radius-md);
+      padding: .9rem 1rem;
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--font-body);
+      color: var(--text-dark);
+      box-shadow: var(--shadow-card);
+      transition: background .15s
+    }
+
+    .perfil-menu-item:hover {
+      background: var(--green-pale)
+    }
+
+    .perfil-menu-item.danger {
+      color: var(--red-soft)
+    }
+
+    .arrow {
+      color: var(--text-soft);
+      font-size: 1.2rem
+    }
+
+    .bottom-nav {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: var(--nav-h);
+      background: var(--warm-white);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0 .5rem;
+      box-shadow: var(--shadow-nav);
+      border-top: 1px solid #f0f0f0;
+      z-index: 100
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: .4rem .7rem;
+      border-radius: var(--radius-sm);
+      transition: background .15s;
+      min-width: 54px
+    }
+
+    .nav-item:hover {
+      background: var(--green-pale)
+    }
+
+    .nav-item.active .nav-label {
+      color: var(--green-dark);
+      font-weight: 800
+    }
+
+    .nav-icon {
+      font-size: 1.3rem;
+      line-height: 1
+    }
+
+    .nav-label {
+      font-size: .65rem;
+      font-weight: 600;
+      color: var(--text-soft);
+      font-family: var(--font-body)
+    }
+
+    .nav-item.active {
+      position: relative
+    }
+
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      width: 20px;
+      height: 3px;
+      background: var(--green-main);
+      border-radius: 3px
+    }
+
+    .toast {
+      position: fixed;
+      bottom: calc(var(--nav-h) + 12px);
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--text-dark);
+      color: white;
+      font-size: .85rem;
+      font-weight: 600;
+      padding: .6rem 1.2rem;
+      border-radius: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s, transform .3s;
+      white-space: nowrap;
+      z-index: 999
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0)
+    }
+
+    .back-btn {
+      font-size: 1.3rem
+    }
+
+    /* ── ONBOARDING MODAL ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .55);
+      z-index: 500;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      animation: fadeOverlay .3s ease
+    }
+
+    @keyframes fadeOverlay {
+      from {
+        opacity: 0
+      }
+
+      to {
+        opacity: 1
+      }
+    }
+
+    .modal-overlay.hidden {
+      display: none
+    }
+
+    .modal-sheet {
+      background: var(--warm-white);
+      border-radius: 28px 28px 0 0;
+      padding: 1.8rem 1.4rem 2.2rem;
+      width: 100%;
+      max-width: 560px;
+      max-height: 90dvh;
+      overflow-y: auto;
+      animation: slideUp .35s ease
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%)
+      }
+
+      to {
+        transform: translateY(0)
+      }
+    }
+
+    .modal-emoji {
+      font-size: 3.5rem;
+      text-align: center;
+      display: block;
+      margin-bottom: .8rem
+    }
+
+    .modal-title {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 1.4rem;
+      text-align: center;
+      color: var(--green-dark);
+      margin-bottom: .4rem
+    }
+
+    .modal-sub {
+      text-align: center;
+      color: var(--text-mid);
+      font-size: .88rem;
+      margin-bottom: 1.5rem
+    }
+
+    .form-group {
+      margin-bottom: 1rem
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 700;
+      font-size: .82rem;
+      color: var(--text-mid);
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin-bottom: .4rem
+    }
+
+    .form-input {
+      width: 100%;
+      border: 2px solid var(--green-pale);
+      border-radius: var(--radius-md);
+      padding: .75rem 1rem;
+      font-size: .95rem;
+      font-family: var(--font-body);
+      color: var(--text-dark);
+      background: var(--cream);
+      transition: border-color .2s;
+      outline: none
+    }
+
+    .form-input:focus {
+      border-color: var(--green-main)
+    }
+
+    .members-setup {
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+      margin-top: .3rem
+    }
+
+    .member-row {
+      display: flex;
+      gap: .5rem;
+      align-items: center
+    }
+
+    .member-row .form-input {
+      flex: 1
+    }
+
+    .member-row .av-badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 900;
+      font-family: var(--font-display);
+      color: white;
+      flex-shrink: 0
+    }
+
+    .btn-add-member {
+      background: var(--green-pale);
+      border: 1.5px dashed var(--green-light);
+      border-radius: var(--radius-md);
+      padding: .6rem 1rem;
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--green-dark);
+      cursor: pointer;
+      font-family: var(--font-body);
+      width: 100%;
+      transition: background .2s
+    }
+
+    .btn-add-member:hover {
+      background: var(--green-light)
+    }
+
+    .btn-start {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: .95rem;
+      font-size: 1.05rem;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: var(--font-display);
+      background: var(--green-main);
+      color: white;
+      box-shadow: 0 6px 18px rgba(76, 175, 80, .35);
+      transition: transform .15s;
+      margin-top: 1.4rem
+    }
+
+    .btn-start:hover {
+      transform: translateY(-2px)
+    }
+
+    /* ── PHOTOS GALLERY in perfil ── */
+    .fotos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .5rem;
+      margin-top: .6rem
+    }
+
+    .foto-thumb {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+      cursor: pointer
+    }
+
+    .no-fotos {
+      text-align: center;
+      color: var(--text-soft);
+      font-size: .85rem;
+      padding: 1.5rem 0
+    }
+
+    /* ── SURVEY MODAL ── */
+    .survey-section-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: .9rem;
+      color: var(--green-dark);
+      margin: 1.2rem 0 .7rem;
+      padding-top: 1rem;
+      border-top: 1.5px solid var(--green-pale)
+    }
+
+    .survey-section-title:first-of-type {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none
+    }
+
+    textarea.form-input {
+      resize: vertical;
+      min-height: 60px
+    }
+
+    .required-mark {
+      color: var(--red-soft)
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-shell">
+
+    <!-- ═══ HOME ═══ -->
+    <section class="screen active" id="screen-home">
+      <div class="screen-header">
+        <div class="header-logo"><span class="logo-icon">🌿</span><span>Conexión Real</span></div>
+      </div>
+      <div class="screen-body">
+        <div class="greeting-card">
+          <p class="greeting-sub">¡Hola,</p>
+          <h2 class="greeting-name" id="family-name-home">Familia! 👋</h2>
+          <p class="greeting-desc">Siguen construyendo momentos juntos</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🔥</div>
+          <div class="stat-info">
+            <p class="stat-label">Racha familiar</p>
+            <h3 class="stat-value" id="streak-value">7 días</h3>
+          </div>
+          <div class="streak-dots"><span class="dot done"></span><span class="dot done"></span><span
+              class="dot done"></span><span class="dot done"></span><span class="dot active"></span><span
+              class="dot"></span><span class="dot"></span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">⭐</div>
+          <div class="stat-info">
+            <p class="stat-label">Nivel actual</p>
+            <h3 class="stat-value">Exploradores</h3>
+          </div>
+          <div class="level-badge">Nv. 2</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🏆</div>
+          <div class="stat-info">
+            <p class="stat-label">Puntos familiares</p>
+            <h3 class="stat-value" id="points-home">0</h3>
+          </div>
+          <div class="points-ring"><svg viewBox="0 0 36 36" class="ring-svg">
+              <circle cx="18" cy="18" r="15" fill="none" stroke="#e8f5e9" stroke-width="3" />
+              <circle id="ring-progress" cx="18" cy="18" r="15" fill="none" stroke="#4caf50" stroke-width="3"
+                stroke-dasharray="0 100" stroke-linecap="round" transform="rotate(-90 18 18)" />
+            </svg><span class="ring-label" id="ring-pct">0%</span></div>
+        </div>
+        <div class="section-header">
+          <h3>Retos sugeridos</h3><button class="link-btn" data-nav="retos">Ver todos</button>
+        </div>
+        <div class="reto-mini-card"><span class="reto-mini-icon">🍽️</span>
+          <div class="reto-mini-info">
+            <p class="reto-mini-title">Cena sin pantallas</p>
+            <p class="reto-mini-pts">+100 pts</p>
+          </div><button class="btn-sm btn-primary" onclick="App.openReto(1)">Ver</button>
+        </div>
+        <div class="reto-mini-card"><span class="reto-mini-icon">💃</span>
+          <div class="reto-mini-info">
+            <p class="reto-mini-title">Baile Familiar</p>
+            <p class="reto-mini-pts">+120 pts</p>
+          </div><button class="btn-sm btn-primary" onclick="App.openReto(9)">Ver</button>
+        </div>
+        <div class="reto-mini-card"><span class="reto-mini-icon">🎬</span>
+          <div class="reto-mini-info">
+            <p class="reto-mini-title">Reels de Acuerdos</p>
+            <p class="reto-mini-pts">+200 pts</p>
+          </div><button class="btn-sm btn-primary" onclick="App.openReto(10)">Ver</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ RETOS ═══ -->
+    <section class="screen" id="screen-retos">
+      <div class="screen-header">
+        <h2 class="screen-title">Retos</h2>
+      </div>
+      <div class="screen-body">
+        <div class="filter-tabs" id="reto-filters">
+          <button class="filter-tab active" data-filter="todos">Todos</button>
+          <button class="filter-tab" data-filter="creativos-en-casa">Creativos en casa</button>
+          <button class="filter-tab" data-filter="afuera">Afuera</button>
+        </div>
+        <div class="retos-list" id="retos-list"></div>
+      </div>
+    </section>
+
+    <!-- ═══ RETO DETALLE ═══ -->
+    <section class="screen" id="screen-reto-detalle">
+      <div class="screen-header">
+        <button class="icon-btn back-btn" onclick="App.goBack()">←</button>
+        <button class="icon-btn" id="btn-fav-reto">🤍</button>
+      </div>
+      <div class="screen-body">
+        <div class="reto-hero" id="reto-hero-emoji"></div>
+        <h2 class="reto-detalle-title" id="reto-detalle-title"></h2>
+        <p class="reto-detalle-desc" id="reto-detalle-desc"></p>
+        <div class="reto-intro-card" id="reto-intro-card">
+          <p class="intro-label">🌱 Para empezar</p>
+          <p id="reto-intro-text"></p>
+        </div>
+        <div class="reto-steps-card">
+          <h4>¿Cómo se completa?</h4>
+          <ul class="reto-steps" id="reto-steps-list"></ul>
+          <div class="reto-questions-card" id="reto-questions-card">
+            <p class="q-label"><span>🤔</span>Preguntas para reflexionar en familia</p>
+            <ul class="reto-questions-list" id="reto-questions-list"></ul>
+          </div>
+        </div>
+        <div class="reto-pts-badge" id="reto-detalle-pts">+100 puntos</div>
+        <button class="btn-block btn-primary" id="btn-aceptar-reto" onclick="App.aceptarReto()">¡Acepto el
+          reto!</button>
+        <span class="btn-progress" id="btn-photo-hint"></span>
+      </div>
+    </section>
+
+    <!-- ═══ FAMILIA ═══ -->
+    <section class="screen" id="screen-familia">
+      <div class="screen-header">
+        <h2 class="screen-title">Familia</h2><button class="icon-btn" onclick="App.showOnboarding()">✏️</button>
+      </div>
+      <div class="screen-body">
+        <div class="section-label">Mi familia</div>
+        <div class="members-row" id="members-row"></div>
+        <div class="section-label" style="margin-top:1.2rem">Nuestro calendario</div>
+        <div class="calendar-card" id="calendar-card"></div>
+        <div class="cal-legend">
+          <div class="cal-legend-item">
+            <div class="cal-legend-dot" style="background:#fff3e0;border:1.5px solid #e65100"></div><span>Reto
+              agendado</span>
+          </div>
+          <div class="cal-legend-item">
+            <div class="cal-legend-dot" style="background:#4caf50"></div><span>Completado</span>
+          </div>
+          <div class="cal-legend-item">
+            <div class="cal-legend-dot" style="background:#4caf50;opacity:.4"></div><span>Hoy</span>
+          </div>
+        </div>
+        <div class="completed-banner"><span>📅</span>
+          <p>Días completados juntos: <strong id="days-completed">0</strong></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ LOGROS ═══ -->
+    <section class="screen" id="screen-logros">
+      <div class="screen-header">
+        <h2 class="screen-title">Logros</h2>
+      </div>
+      <div class="screen-body">
+        <div class="achievement-banner">
+          <div class="ach-icon">🎉</div>
+          <div>
+            <p class="ach-label">¡Sigan así!</p>
+            <p class="ach-desc">Cada reto fortalece su vínculo</p>
+          </div>
+        </div>
+        <div class="logros-grid" id="logros-grid"></div>
+      </div>
+    </section>
+
+    <!-- ═══ PERFIL ═══ -->
+    <section class="screen" id="screen-perfil">
+      <div class="screen-header">
+        <h2 class="screen-title">Perfil</h2>
+      </div>
+      <div class="screen-body">
+        <div class="perfil-hero">
+          <div class="perfil-avatar" onclick="document.getElementById('input-family-photo').click()">
+            <span id="perfil-avatar-initials">FA</span>
+            <img class="perfil-avatar-img" id="perfil-avatar-img" alt="Foto familiar" />
+            <span class="perfil-avatar-edit">📷</span>
+          </div>
+          <input type="file" id="input-family-photo" accept="image/*" style="display:none"
+            onchange="App.handleFamilyPhoto(event)" />
+          <h3 id="perfil-family-name">Mi Familia</h3>
+          <span class="perfil-nivel">Exploradores</span>
+        </div>
+        <div class="stats-row">
+          <div class="stat-pill"><span class="stat-pill-val" id="perfil-retos">0</span><span
+              class="stat-pill-lbl">Retos</span></div>
+          <div class="stat-pill"><span class="stat-pill-val" id="perfil-racha">0 días</span><span
+              class="stat-pill-lbl">Racha</span></div>
+          <div class="stat-pill"><span class="stat-pill-val" id="perfil-puntos">0</span><span
+              class="stat-pill-lbl">Puntos</span></div>
+        </div>
+        <div class="section-header">
+          <h3>📸 Nuestras fotos</h3>
+        </div>
+        <div class="fotos-grid" id="fotos-grid"></div>
+        <div class="perfil-menu" style="margin-top:1.2rem">
+          <button class="perfil-menu-item" onclick="App.showOnboarding()"><span>✏️ Editar familia</span><span
+              class="arrow">›</span></button>
+          <button class="perfil-menu-item" onclick="App.showSurvey()"><span>📋 Ver/editar encuesta</span><span
+              class="arrow">›</span></button>
+          <button class="perfil-menu-item danger" onclick="App.resetData()"><span>🔄 Reiniciar progreso</span><span
+              class="arrow">›</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ BOTTOM NAV ═══ -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-nav="home"><span class="nav-icon">🏠</span><span
+          class="nav-label">Inicio</span></button>
+      <button class="nav-item" data-nav="retos"><span class="nav-icon">🎯</span><span
+          class="nav-label">Retos</span></button>
+      <button class="nav-item" data-nav="familia"><span class="nav-icon">👨‍👩‍👧‍👦</span><span
+          class="nav-label">Familia</span></button>
+      <button class="nav-item" data-nav="logros"><span class="nav-icon">🏅</span><span
+          class="nav-label">Logros</span></button>
+      <button class="nav-item" data-nav="perfil"><span class="nav-icon">👤</span><span
+          class="nav-label">Perfil</span></button>
+    </nav>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ═══ AGENDA MODAL ═══ -->
+  <div class="agenda-modal hidden" id="modal-agenda">
+    <div class="agenda-sheet">
+      <h3 id="agenda-modal-title">📅 Agendar reto</h3>
+      <p class="agenda-date-lbl" id="agenda-modal-date"></p>
+      <div class="agenda-retos-list" id="agenda-retos-list"></div>
+      <div class="agenda-actions">
+        <button class="agenda-btn-cancel" onclick="App.closeAgenda()">Cancelar</button>
+        <button class="agenda-btn-remove" id="btn-agenda-remove" onclick="App.removeAgenda()"
+          style="display:none">Quitar</button>
+        <button class="agenda-btn-save" onclick="App.saveAgenda()">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ ONBOARDING MODAL ═══ -->
+  <div class="modal-overlay hidden" id="modal-onboarding">
+    <div class="modal-sheet">
+      <span class="modal-emoji">🌿</span>
+      <h2 class="modal-title">¡Bienvenidos a Conexión Real!</h2>
+      <p class="modal-sub">Cuéntanos quiénes forman tu familia para empezar a crear momentos juntos.</p>
+      <div class="form-group">
+        <label class="form-label">Nombre de la familia</label>
+        <input class="form-input" id="input-family-name" type="text" placeholder="Ej: Familia González"
+          maxlength="30" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Integrantes</label>
+        <div class="members-setup" id="members-setup"></div>
+        <button class="btn-add-member" onclick="App.addMemberInput()" style="margin-top:.5rem">+ Agregar
+          integrante</button>
+      </div>
+      <button class="btn-start" onclick="App.saveOnboarding()">¡Empezar! 🚀</button>
+    </div>
+  </div>
+
+  <!-- ═══ ENCUESTA DE PRE-REGISTRO ═══ -->
+  <div class="modal-overlay hidden" id="modal-encuesta">
+    <div class="modal-sheet">
+      <span class="modal-emoji">📋</span>
+      <h2 class="modal-title">Encuesta de pre-registro</h2>
+      <p class="modal-sub">Antes de comenzar los retos, cuéntanos un poco más sobre tu familia. Esta información nos
+        ayuda a entender mejor su experiencia.</p>
+
+      <p class="survey-section-title">Familia</p>
+      <div class="form-group">
+        <label class="form-label">Nombre de la familia <span class="required-mark">*</span></label>
+        <input class="form-input" id="survey-nombre-familia" type="text" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Integrantes de la familia <span class="required-mark">*</span></label>
+        <div class="members-setup" id="survey-members-setup"></div>
+        <button type="button" class="btn-add-member" onclick="App.addSurveyMemberInput()" style="margin-top:.5rem">+
+          Agregar integrante</button>
+      </div>
+
+      <p class="survey-section-title">Información general</p>
+      <div class="form-group">
+        <label class="form-label">Padre, madre o cuidador principal <span class="required-mark">*</span></label>
+        <select class="form-input" id="survey-nombre" required>
+          <option value="">Selecciona...</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Correo electrónico <span class="required-mark">*</span></label>
+        <input class="form-input" id="survey-correo" type="email" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Teléfono <span class="required-mark">*</span></label>
+        <input class="form-input" id="survey-telefono" type="tel" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Ciudad <span class="required-mark">*</span></label>
+        <input class="form-input" id="survey-ciudad" type="text" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Localidad</label>
+        <input class="form-input" id="survey-localidad" type="text" />
+      </div>
+
+      <p class="survey-section-title">Información familiar</p>
+      <div class="form-group">
+        <label class="form-label">Número de personas del hogar</label>
+        <input class="form-input" id="survey-personas" type="number" min="1" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tipo de familia</label>
+        <select class="form-input" id="survey-tipofamilia">
+          <option value="">Selecciona...</option>
+          <option>Nuclear</option>
+          <option>Monoparental</option>
+          <option>Extensa</option>
+          <option>Reconstituida</option>
+          <option>Otra</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Número de hijos</label>
+        <input class="form-input" id="survey-hijos" type="number" min="0" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Edad(es) de los hijos</label>
+        <input class="form-input" id="survey-edades" type="text" placeholder="Ej: 5, 8 y 11 años" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">¿Tiene hijos entre 6 y 11 años?</label>
+        <select class="form-input" id="survey-hijos611">
+          <option value="">Selecciona...</option>
+          <option>Sí</option>
+          <option>No</option>
+        </select>
+      </div>
+
+      <p class="survey-section-title">Uso de dispositivos tecnológicos en casa</p>
+      <div class="form-group">
+        <label class="form-label">Dispositivos utilizados en casa</label>
+        <input class="form-input" id="survey-dispositivos" type="text" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Dispositivo más utilizado por el niño(a)</label>
+        <input class="form-input" id="survey-dispositivo-nino" type="text" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tiempo promedio diario de uso</label>
+        <input class="form-input" id="survey-tiempo-uso" type="text" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">¿Existen normas para el uso de dispositivos?</label>
+        <textarea class="form-input" id="survey-normas"></textarea>
+      </div>
+
+      <p class="survey-section-title">Comunicación familiar</p>
+      <div class="form-group">
+        <label class="form-label">¿Con qué frecuencia realizan actividades familiares sin pantallas?</label>
+        <input class="form-input" id="survey-frecuencia" type="text" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">¿Cómo describiría la comunicación familiar?</label>
+        <textarea class="form-input" id="survey-comunicacion"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">¿Cómo resuelven los conflictos relacionados con el uso de pantallas?</label>
+        <textarea class="form-input" id="survey-conflictos"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">¿Cuánto tiempo comparte su familia sin utilizar celulares u otros
+          dispositivos?</label>
+        <input class="form-input" id="survey-tiempo-sin-dispositivos" type="text" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">¿Quién utiliza más tiempo el celular en la familia?</label>
+        <select class="form-input" id="survey-quien-celular">
+          <option value="">Selecciona...</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">¿Qué emociones aparecen cuando alguien pasa demasiado tiempo en el celular?</label>
+        <textarea class="form-input" id="survey-emociones"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">¿Qué tan importante consideran compartir tiempo en familia sin tecnología? (1 a
+          5)</label>
+        <select class="form-input" id="survey-importancia">
+          <option value="">Selecciona...</option>
+          <option value="1">1 – Nada importante</option>
+          <option value="2">2 – Poco importante</option>
+          <option value="3">3 – Moderadamente importante</option>
+          <option value="4">4 – Importante</option>
+          <option value="5">5 – Muy importante</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Si pudieran cambiar una sola cosa sobre el uso de la tecnología en su hogar,
+          ¿cuál sería?</label>
+        <textarea class="form-input" id="survey-cambio"></textarea>
+      </div>
+
+      <button class="btn-start" onclick="App.saveSurvey()">Continuar 🚀</button>
+    </div>
+  </div>
+
+  <script>
+    // ── AVATAR COLORS ──
+    const AV_COLORS = ['av-green', 'av-blue', 'av-pink', 'av-yellow', 'av-purple', 'av-orange'];
+    const AV_STYLES = {
+      'av-green': 'background:linear-gradient(135deg,#43a047,#1b5e20)',
+      'av-blue': 'background:linear-gradient(135deg,#42a5f5,#1565c0)',
+      'av-pink': 'background:linear-gradient(135deg,#ec407a,#880e4f)',
+      'av-yellow': 'background:linear-gradient(135deg,#ffca28,#f57f17);color:#1b2a1e',
+      'av-purple': 'background:linear-gradient(135deg,#ab47bc,#6a1b9a)',
+      'av-orange': 'background:linear-gradient(135deg,#ffa726,#e65100)',
+    };
+
+    // ── RETOS DATA ──
+    const RETOS_DATA = [
+      {
+        id: 1, emoji: '🍽️', titulo: 'Cena sin pantallas', desc: 'Disfruten una comida sin teléfonos, TV ni tabletas.', categoria: 'creativos-en-casa', pts: 100,
+        intro: 'Este reto los invita a dejar a un lado las pantallas para reencontrarse a través de la conversación, la escucha y el tiempo compartido. Por eso iniciaremos con la siguiente pregunta: ¿Qué es lo que más disfrutan de comer en familia?',
+        pasos: ['Preparan juntos la comida', 'Comen sin pantallas', 'Conversan y disfrutan', 'Toman una foto juntos'],
+        preguntas: ['¿Qué sentimos cuando compartimos este momento mirándonos y escuchándonos realmente como familia?', '¿Qué podríamos hacer para que estos espacios sin pantallas se conviertan en una costumbre en nuestro hogar?']
+      },
+      {
+        id: 2, emoji: '📖', titulo: 'Noche de historias', desc: 'Cuenten o inventen una historia en familia.', categoria: 'creativos-en-casa', pts: 100,
+        intro: 'En este reto como familia vamos a fortalecer la imaginación, la escucha y la unión emocional mediante historias familiares. Iniciaremos con la siguiente pregunta: ¿Qué personaje quisieran inventar juntos?',
+        pasos: ['Eligen un tema juntos', 'Cada uno agrega parte de la historia', 'Terminan con un final sorpresa', 'Escriben el título de su historia'],
+        preguntas: ['¿Cómo se sintieron creando juntos?', '¿Qué recuerdos aparecieron durante la actividad?']
+      },
+      {
+        id: 3, emoji: '🥾', titulo: 'Exploradores', desc: 'Salgan a caminar y descubran algo nuevo en el barrio.', categoria: 'afuera', pts: 150,
+        intro: 'Vamos a promover la convivencia, la exploración y el trabajo en equipo mediante actividades fuera de casa. Por eso iniciamos con la pregunta: ¿Cuál ha sido su mejor aventura familiar?',
+        pasos: ['Eligen una ruta nueva', 'Buscan 3 cosas interesantes', 'Toman fotos del recorrido', 'Cuentan lo que descubrieron'],
+        preguntas: ['¿Qué aprendieron hoy?', '¿Cómo se sintieron compartiendo este momento?']
+      },
+      {
+        id: 4, emoji: '🎨', titulo: 'Arte en familia', desc: 'Creen juntos una obra de arte con lo que tengan en casa.', categoria: 'creativos-en-casa', pts: 120,
+        intro: 'El arte nos permite expresar emociones, recuerdos y valores familiares de una manera creativa y significativa. Vamos a iniciar con la pregunta: ¿Qué les gustaría expresar sobre su familia en esta creación?',
+        pasos: ['Reúnen materiales creativos', 'Cada uno aporta una parte', 'Le ponen un nombre a la obra', 'La exhiben en la casa'],
+        preguntas: ['¿Qué representa esta obra sobre lo que somos como familia?', '¿Qué fortalezas descubrimos mientras trabajábamos juntos?']
+      },
+      {
+        id: 5, emoji: '🍳', titulo: 'Cocineros en casa', desc: 'Preparen una receta nueva todos juntos.', categoria: 'creativos-en-casa', pts: 130,
+        intro: 'Cocinar juntos es una oportunidad para compartir responsabilidades, aprender en equipo y disfrutar del proceso de crear algo en familia. Por eso iniciamos con la pregunta: ¿Qué creen que hace especial cocinar juntos en familia?',
+        pasos: ['Eligen una receta nueva', 'Cada uno tiene una tarea', 'Cocinan juntos sin apuros', 'Ponen la mesa y comen con calma'],
+        preguntas: ['¿Qué aprendimos hoy sobre trabajar juntos como familia?', '¿Cómo nos sentimos al compartir y disfrutar algo hecho entre todos?']
+      },
+      {
+        id: 6, emoji: '⭐', titulo: 'Noche de estrellas', desc: 'Salgan a mirar el cielo nocturno y hablen de sus sueños.', categoria: 'afuera', pts: 110,
+        intro: 'Observar el cielo juntos nos invita a detenernos, conversar y compartir sueños, emociones y pensamientos que muchas veces no expresamos en la rutina diaria. Iniciamos con la pregunta: ¿Por qué creen que es importante detenernos a conversar y escucharnos?',
+        pasos: ['Buscan un lugar tranquilo', 'Apagan las luces del teléfono', 'Cada uno nombra una estrella', 'Comparten un deseo o sueño'],
+        preguntas: ['¿Qué sentimos al compartir nuestros sueños y pensamientos juntos?', '¿Cómo podemos apoyarnos más como familia en nuestros proyectos y emociones?']
+      },
+      {
+        id: 7, emoji: '🎲', titulo: 'Noche de juegos', desc: 'Jueguen un juego de mesa sin interrupciones.', categoria: 'creativos-en-casa', pts: 90,
+        intro: 'Jugar en familia fortalece la alegría, la paciencia y el trabajo en equipo. Por eso iniciamos con: ¿Cómo creen que el juego puede ayudarnos a compartir más como familia?',
+        pasos: ['Eligen el juego juntos', 'Apagan las pantallas', 'Juegan mínimo 30 minutos', 'El ganador elige el próximo juego'],
+        preguntas: ['¿Qué aprendimos sobre el respeto y la convivencia mientras jugábamos?', '¿Cómo cambia nuestro ambiente familiar cuando compartimos momentos de diversión?']
+      },
+      {
+        id: 8, emoji: '🌱', titulo: 'Pequeños jardineros', desc: 'Planten algo juntos, aunque sea en una maceta.', categoria: 'creativos-en-casa', pts: 140,
+        intro: 'Sembrar juntos representa el cuidado, la paciencia y el compromiso que también necesita una familia para crecer unida. Iniciamos reflexionando sobre: ¿Qué necesita nuestra familia para seguir creciendo unida?',
+        pasos: ['Consiguen tierra y semillas', 'Cada uno planta algo', 'Le ponen nombre a la planta', 'Se comprometen a cuidarla'],
+        preguntas: ['¿Qué similitudes encontramos entre cuidar una planta y cuidar nuestra familia?', '¿Qué compromisos podemos asumir para fortalecer nuestra unión familiar?']
+      },
+      {
+        id: 9, emoji: '💃', titulo: 'Baile Familiar', desc: 'Creen una coreografía juntos y bailen sin parar durante 10 minutos.', categoria: 'creativos-en-casa', pts: 120,
+        intro: 'Bailar juntos permite liberar emociones, compartir alegría y crear recuerdos significativos. Reflexionamos sobre: ¿Cómo creen que la música puede unir más a la familia?',
+        pasos: ['Eligen una canción favorita de todos', 'Cada uno inventa un paso de baile', 'Juntan los pasos y arman la coreografía', 'Graban o bailan en familia y se divierten'],
+        preguntas: ['¿Cómo nos sentimos al divertirnos y expresarnos libremente juntos?', '¿Qué momentos felices queremos seguir creando como familia?']
+      },
+      {
+        id: 10, emoji: '🎬', titulo: 'Reels de Acuerdos Familiares', desc: 'Creen un video divertido con pancartas sobre sus acuerdos de uso consciente de la tecnología.', categoria: 'creativos-en-casa', pts: 200,
+        intro: 'La tecnología forma parte de nuestra vida cotidiana, y usarla de manera consciente fortalece la convivencia familiar. Por eso este reto los invita a reflexionar juntos y plasmar en un video sus propios acuerdos. Para comenzar: ¿Qué reglas o acuerdos creen que les ayudarían a usar mejor la tecnología en familia?',
+        pasos: ['Conversan sobre sus hábitos tecnológicos como familia', 'Escriben 3–5 acuerdos en pancartas (cartulinas o papel)', 'Graban el video mostrando cada acuerdo con creatividad', 'Comparten el video y pónganlo en un lugar visible del hogar'],
+        preguntas: ['¿Qué aprendimos sobre nuestros hábitos tecnológicos al hablar como familia?', '¿Cómo podemos recordarnos mutuamente cumplir estos acuerdos con amor y respeto?']
+      },
+    ];
+
+    // ── LOGROS DATA ──
+    const LOGROS_DATA = [
+      { id: 'lg1', emoji: '❤️', nombre: 'Familia Conectada', desc: 'Completen 10 retos juntos', pts: 200, requiere: 10 },
+      { id: 'lg2', emoji: '🏔️', nombre: 'Exploradores', desc: 'Hagan 3 retos de tipo Afuera', pts: 150, requiere: 3, tipo: 'afuera' },
+      { id: 'lg3', emoji: '📚', nombre: 'Cuentacuentos', desc: 'Hagan 2 retos Creativos en casa', pts: 120, requiere: 2, tipo: 'creativos-en-casa' },
+      { id: 'lg4', emoji: '🌿', nombre: 'Naturaleza', desc: 'Completen el reto Pequeños Jardineros', pts: 100 },
+      { id: 'lg5', emoji: '🔥', nombre: 'Racha 7 días', desc: 'Mantengan una racha de 7 días', pts: 175, requiere: 7 },
+      { id: 'lg6', emoji: '🏆', nombre: 'Campeones', desc: 'Alcancen 2000 puntos', pts: 300, requiere: 2000 },
+      { id: 'lg7', emoji: '💃', nombre: 'Bailarines', desc: 'Completen el reto Baile Familiar', pts: 120 },
+      { id: 'lg8', emoji: '🎬', nombre: 'Creadores', desc: 'Completen el Reels de Acuerdos', pts: 200 },
+    ];
+
+    // ── STATE ──
+    const DEFAULT_STATE = {
+      familyName: 'Mi Familia',
+      familyPhoto: null,
+      members: [],
+      points: 0,
+      streak: 0,
+      retosCompletados: [],
+      diasCompletados: 0,
+      currentRetoId: null,
+      stepPhotos: {},
+      agenda: {},        // { "YYYY-M-D": retoId }
+      completadoDias: {}, // { "YYYY-M-D": retoId }
+      onboardingDone: false,
+      surveyDone: false,
+      surveyData: {},
+    };
+
+    function loadState() {
+      try { const s = localStorage.getItem('cr_v2'); return s ? { ...DEFAULT_STATE, ...JSON.parse(s) } : { ...DEFAULT_STATE } }
+      catch { return { ...DEFAULT_STATE } }
+    }
+    function saveState() { localStorage.setItem('cr_v2', JSON.stringify(state)) }
+
+    let state = loadState();
+    let previousScreen = null;
+
+    // ── NAVIGATION ──
+    function navigate(screenId) {
+      const cur = document.querySelector('.screen.active');
+      if (cur) {
+        const pid = cur.id.replace('screen-', '');
+        if (pid !== 'reto-detalle') previousScreen = pid;
+        cur.classList.remove('active');
+      }
+      const target = document.getElementById('screen-' + screenId);
+      if (!target) return;
+      target.classList.add('active');
+      document.querySelectorAll('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.nav === screenId));
+      const inits = { home: renderHome, retos: renderRetos, familia: renderFamilia, logros: renderLogros, perfil: renderPerfil };
+      if (inits[screenId]) inits[screenId]();
+    }
+
+    // ── RENDER HOME ──
+    function renderHome() {
+      document.getElementById('family-name-home').textContent = state.familyName + '! 👋';
+      document.getElementById('streak-value').textContent = state.streak + ' días';
+      document.getElementById('points-home').textContent = state.points.toLocaleString();
+      const pct = Math.min(Math.round((state.points / 2000) * 100), 100);
+      document.getElementById('ring-pct').textContent = pct + '%';
+      document.getElementById('ring-progress').setAttribute('stroke-dasharray', pct + ' ' + (100 - pct));
+    }
+
+    // ── RENDER RETOS ──
+    let activeFilter = 'todos';
+    function renderRetos() {
+      const list = document.getElementById('retos-list');
+      const filtrados = activeFilter === 'todos' ? RETOS_DATA : RETOS_DATA.filter(r => r.categoria === activeFilter);
+      list.innerHTML = filtrados.map(r => {
+        const done = state.retosCompletados.includes(r.id);
+        return `<div class="reto-card${done ? ' done' : ''}" onclick="App.openReto(${r.id})">
+      <span class="reto-card-emoji">${r.emoji}</span>
+      <div class="reto-card-info">
+        <p class="reto-card-title">${r.titulo}</p>
+        <p class="reto-card-desc">${r.desc}</p>
+        <p class="reto-card-pts">+${r.pts} pts</p>
+      </div>
+      ${done ? '<span class="reto-done-badge">✅</span>' : ''}
+    </div>`;
+      }).join('');
+    }
+
+    // ── RENDER RETO DETALLE ──
+    function renderRetoDetalle(id) {
+      const reto = RETOS_DATA.find(r => r.id === id);
+      if (!reto) return;
+      state.currentRetoId = id;
+      document.getElementById('reto-hero-emoji').textContent = reto.emoji;
+      document.getElementById('reto-detalle-title').textContent = reto.titulo;
+      document.getElementById('reto-detalle-desc').textContent = reto.desc;
+      document.getElementById('reto-detalle-pts').textContent = '+' + reto.pts + ' puntos';
+      document.getElementById('reto-intro-text').textContent = reto.intro;
+      document.getElementById('reto-questions-list').innerHTML = reto.preguntas.map(q => `<li>${q}</li>`).join('');
+
+      const stepsList = document.getElementById('reto-steps-list');
+      stepsList.innerHTML = reto.pasos.map((p, i) => {
+        const photoKey = id + '_' + i;
+        const savedPhoto = state.stepPhotos[photoKey];
+        return `<li class="step-item${savedPhoto ? ' has-photo' : ''}" id="step-item-${id}-${i}">
+      <span class="step-check">📌</span>
+      <div class="step-content">
+        <span class="step-text">${p}</span>
+        <div class="step-photo-area">
+          <label class="photo-upload-btn">
+            📷 ${savedPhoto ? 'Cambiar foto' : 'Agregar foto'}
+            <input type="file" accept="image/*" onchange="App.handleStepPhoto(event,${id},${i})"/>
+          </label>
+          <img class="step-photo-preview${savedPhoto ? ' show' : ''}" id="step-photo-${id}-${i}" src="${savedPhoto || ''}" alt="Foto paso ${i + 1}"/>
+        </div>
+      </div>
+    </li>`;
+      }).join('');
+
+      updateCompletarBtn(id);
+
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('screen-reto-detalle').classList.add('active');
+      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    }
+
+    // ── RENDER FAMILIA ──
+    function renderFamilia() {
+      document.getElementById('days-completed').textContent = state.diasCompletados;
+      // Members
+      const row = document.getElementById('members-row');
+      row.innerHTML = state.members.map((m, i) => {
+        const cls = AV_COLORS[i % AV_COLORS.length];
+        const initial = m.charAt(0).toUpperCase();
+        return `<div class="member-avatar"><div class="avatar ${cls}">${initial}</div><p>${m}</p></div>`;
+      }).join('') +
+        `<div class="member-avatar"><div class="avatar av-add" onclick="App.showOnboarding()">+</div><p>Editar</p></div>`;
+      renderCalendar();
+    }
+
+    // ── CALENDAR STATE ──
+    let calYear = new Date().getFullYear();
+    let calMonth = new Date().getMonth();
+    let agendaSelectedDay = null;
+    let agendaSelectedReto = null;
+
+    function renderCalendar() {
+      const now = new Date();
+      const todayY = now.getFullYear(), todayM = now.getMonth(), todayD = now.getDate();
+      const firstDay = new Date(calYear, calMonth, 1).getDay();
+      const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+      const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+      const dayNames = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
+
+      let html = `<div class="cal-header">
+    <button class="cal-nav" onclick="App.calPrev()">‹</button>
+    <span>${monthNames[calMonth]} ${calYear}</span>
+    <button class="cal-nav" onclick="App.calNext()">›</button>
+  </div><div class="cal-grid">`;
+      html += dayNames.map(d => `<div class="cal-day-name">${d}</div>`).join('');
+      const offset = firstDay === 0 ? 6 : firstDay - 1;
+      for (let i = 0; i < offset; i++) html += `<div class="cal-day empty"></div>`;
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const key = `${calYear}-${calMonth}-${d}`;
+        const isToday = d === todayD && calMonth === todayM && calYear === todayY;
+        const agendado = state.agenda && state.agenda[key];
+        const completadoKey = state.completadoDias && state.completadoDias[key];
+        let cls = '', dot = '';
+        if (completadoKey) cls = 'completado';
+        else if (isToday) cls = 'today';
+        else if (agendado) cls = 'agendado';
+        if (agendado && !completadoKey) dot = `<span class="cal-dot"></span>`;
+        const retoEmoji = agendado ? (RETOS_DATA.find(r => r.id === agendado)?.emoji || '') : '';
+        html += `<div class="cal-day ${cls}" onclick="App.openAgenda(${d})" title="${agendado ? 'Reto agendado' : 'Agendar reto'}">${d}${dot}</div>`;
+      }
+      html += '</div>';
+      document.getElementById('calendar-card').innerHTML = html;
+      document.getElementById('days-completed').textContent = state.diasCompletados;
+    }
+
+    // ── RENDER LOGROS ──
+    function renderLogros() {
+      const completados = state.retosCompletados.length;
+      const grid = document.getElementById('logros-grid');
+      grid.innerHTML = LOGROS_DATA.map(lg => {
+        let unlocked = false;
+        if (lg.id === 'lg1') unlocked = completados >= lg.requiere;
+        else if (lg.id === 'lg2') unlocked = state.retosCompletados.filter(id => RETOS_DATA.find(r => r.id === id)?.categoria === 'afuera').length >= (lg.requiere || 3);
+        else if (lg.id === 'lg3') unlocked = state.retosCompletados.filter(id => RETOS_DATA.find(r => r.id === id)?.categoria === 'creativos-en-casa').length >= (lg.requiere || 2);
+        else if (lg.id === 'lg4') unlocked = state.retosCompletados.includes(8);
+        else if (lg.id === 'lg5') unlocked = state.streak >= (lg.requiere || 7);
+        else if (lg.id === 'lg6') unlocked = state.points >= (lg.requiere || 2000);
+        else if (lg.id === 'lg7') unlocked = state.retosCompletados.includes(9);
+        else if (lg.id === 'lg8') unlocked = state.retosCompletados.includes(10);
+        return `<div class="logro-card${unlocked ? '' : ' locked'}">
+      <span class="logro-emoji">${lg.emoji}</span>
+      <p class="logro-name">${lg.nombre}</p>
+      <p class="logro-desc">${lg.desc}</p>
+      <p class="logro-pts">+${lg.pts} pts</p>
+    </div>`;
+      }).join('');
+    }
+
+    // ── RENDER PERFIL ──
+    function renderPerfil() {
+      const initials = state.familyName.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+      document.getElementById('perfil-avatar-initials').textContent = initials;
+      const avatarImg = document.getElementById('perfil-avatar-img');
+      const avatarInitials = document.getElementById('perfil-avatar-initials');
+      if (state.familyPhoto) {
+        avatarImg.src = state.familyPhoto;
+        avatarImg.classList.add('show');
+        avatarInitials.style.display = 'none';
+      } else {
+        avatarImg.classList.remove('show');
+        avatarInitials.style.display = '';
+      }
+      document.getElementById('perfil-family-name').textContent = state.familyName;
+      document.getElementById('perfil-retos').textContent = state.retosCompletados.length;
+      document.getElementById('perfil-racha').textContent = state.streak + ' días';
+      document.getElementById('perfil-puntos').textContent = state.points.toLocaleString();
+      // Photos grid
+      const allPhotos = Object.values(state.stepPhotos).filter(Boolean);
+      const grid = document.getElementById('fotos-grid');
+      if (allPhotos.length === 0) {
+        grid.innerHTML = '<p class="no-fotos" style="grid-column:span 3">Aún no hay fotos. ¡Completa retos y sube imágenes!</p>';
+      } else {
+        grid.innerHTML = allPhotos.map(src => `<img class="foto-thumb" src="${src}" alt="foto"/>`).join('');
+      }
+    }
+
+    // ── ONBOARDING ──
+    function renderOnboarding() {
+      document.getElementById('input-family-name').value = state.familyName || '';
+      const setup = document.getElementById('members-setup');
+      const members = state.members.length > 0 ? state.members : ['', ''];
+      setup.innerHTML = members.map((m, i) => {
+        const cls = AV_COLORS[i % AV_COLORS.length];
+        const style = AV_STYLES[cls];
+        return `<div class="member-row">
+      <div class="av-badge" style="${style}">${m ? m[0].toUpperCase() : (i + 1)}</div>
+      <input class="form-input member-input" type="text" placeholder="Nombre del integrante" value="${m}" maxlength="20"/>
+    </div>`;
+      }).join('');
+    }
+
+    // ── ENCUESTA DE PRE-REGISTRO ──
+    const SURVEY_FIELDS = ['nombre-familia', 'nombre', 'correo', 'telefono', 'ciudad', 'localidad',
+      'personas', 'tipofamilia', 'hijos', 'edades', 'hijos611', 'dispositivos', 'dispositivo-nino', 'tiempo-uso',
+      'normas', 'frecuencia', 'comunicacion', 'conflictos', 'tiempo-sin-dispositivos', 'quien-celular', 'emociones',
+      'importancia', 'cambio'];
+    const SURVEY_PERSON_SELECTS = ['survey-nombre', 'survey-quien-celular'];
+
+    function renderSurveyMembers(members) {
+      const setup = document.getElementById('survey-members-setup');
+      const list = members && members.length > 0 ? members : [''];
+      setup.innerHTML = list.map((m, i) => {
+        const cls = AV_COLORS[i % AV_COLORS.length];
+        const style = AV_STYLES[cls];
+        return `<div class="member-row">
+      <div class="av-badge" style="${style}">${m ? m[0].toUpperCase() : (i + 1)}</div>
+      <input class="form-input survey-member-input" type="text" placeholder="Nombre del integrante" value="${m}" maxlength="20"/>
+    </div>`;
+      }).join('');
+    }
+
+    function getSurveyMembers() {
+      return [...document.querySelectorAll('.survey-member-input')].map(i => i.value.trim()).filter(Boolean);
+    }
+
+    function updateSurveyPersonSelects() {
+      const members = getSurveyMembers();
+      SURVEY_PERSON_SELECTS.forEach(id => {
+        const sel = document.getElementById(id);
+        if (!sel) return;
+        const current = sel.value;
+        sel.innerHTML = '<option value="">Selecciona...</option>' +
+          members.map(m => `<option value="${m}"${m === current ? ' selected' : ''}>${m}</option>`).join('');
+      });
+    }
+
+    function renderSurvey() {
+      const savedMembers = state.surveyData.integrantes
+        ? state.surveyData.integrantes.split(',').map(m => m.trim()).filter(Boolean)
+        : state.members;
+      renderSurveyMembers(savedMembers);
+      updateSurveyPersonSelects();
+
+      SURVEY_FIELDS.forEach(f => {
+        const el = document.getElementById('survey-' + f);
+        if (el) el.value = state.surveyData[f] || '';
+      });
+      const nombreFamiliaEl = document.getElementById('survey-nombre-familia');
+      if (nombreFamiliaEl && !nombreFamiliaEl.value) nombreFamiliaEl.value = state.familyName || '';
+    }
+
+    // ── HELPER: check if all step photos uploaded for a reto ──
+    function allPhotosUploaded(retoId) {
+      const reto = RETOS_DATA.find(r => r.id === retoId);
+      if (!reto) return false;
+      return reto.pasos.every((_, i) => !!state.stepPhotos[retoId + '_' + i]);
+    }
+
+    function photosCount(retoId) {
+      const reto = RETOS_DATA.find(r => r.id === retoId);
+      if (!reto) return { done: 0, total: 0 };
+      const total = reto.pasos.length;
+      const done = reto.pasos.filter((_, i) => !!state.stepPhotos[retoId + '_' + i]).length;
+      return { done, total };
+    }
+
+    function updateCompletarBtn(id) {
+      const btn = document.getElementById('btn-aceptar-reto');
+      const hint = document.getElementById('btn-photo-hint');
+      const done = state.retosCompletados.includes(id);
+
+      if (done) {
+        btn.textContent = '✅ Reto completado';
+        btn.className = 'btn-block btn-done';
+        btn.disabled = true; btn.onclick = null;
+        if (hint) hint.textContent = '';
+        return;
+      }
+
+      const { done: uploaded, total } = photosCount(id);
+      const allDone = uploaded === total;
+
+      if (allDone) {
+        btn.textContent = '🏆 Marcar como completado';
+        btn.className = 'btn-block btn-primary';
+        btn.disabled = false;
+        btn.onclick = App.aceptarReto;
+        if (hint) hint.textContent = '';
+      } else {
+        btn.textContent = '📷 Sube todas las fotos para completar';
+        btn.className = 'btn-block btn-locked';
+        btn.disabled = true; btn.onclick = null;
+        if (hint) hint.textContent = `Fotos subidas: ${uploaded} de ${total}`;
+      }
+    }
+
+    // ── TOAST ──
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2800);
+    }
+
+    // ── PUBLIC API ──
+    window.App = {
+      calPrev() {
+        calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } renderCalendar();
+      },
+      calNext() {
+        calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCalendar();
+      },
+      openAgenda(day) {
+        agendaSelectedDay = day;
+        agendaSelectedReto = null;
+        const key = `${calYear}-${calMonth}-${day}`;
+        const existingReto = state.agenda[key] || null;
+        const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+        document.getElementById('agenda-modal-title').textContent = '📅 Agendar reto';
+        document.getElementById('agenda-modal-date').textContent = `${day} de ${monthNames[calMonth]} ${calYear}`;
+        const removeBtn = document.getElementById('btn-agenda-remove');
+        removeBtn.style.display = existingReto ? 'block' : 'none';
+        // Build reto list
+        const list = document.getElementById('agenda-retos-list');
+        list.innerHTML = RETOS_DATA.map(r => {
+          const done = state.retosCompletados.includes(r.id);
+          const sel = r.id === existingReto;
+          if (sel) agendaSelectedReto = r.id;
+          return `<div class="agenda-reto-item${sel ? ' selected' : ''}" onclick="App.selectAgendaReto(${r.id},this)">
+        <span class="agenda-reto-em">${r.emoji}</span>
+        <div class="agenda-reto-info">
+          <p class="agenda-reto-title">${r.titulo}${done ? ' ✅' : ''}</p>
+          <p class="agenda-reto-pts">+${r.pts} pts</p>
+        </div>
+      </div>`;
+        }).join('');
+        document.getElementById('modal-agenda').classList.remove('hidden');
+      },
+      selectAgendaReto(id, el) {
+        agendaSelectedReto = id;
+        document.querySelectorAll('.agenda-reto-item').forEach(i => i.classList.remove('selected'));
+        el.classList.add('selected');
+      },
+      saveAgenda() {
+        if (!agendaSelectedReto) { showToast('Selecciona un reto'); return; }
+        const key = `${calYear}-${calMonth}-${agendaSelectedDay}`;
+        if (!state.agenda) state.agenda = {};
+        state.agenda[key] = agendaSelectedReto;
+        saveState(); renderCalendar();
+        document.getElementById('modal-agenda').classList.add('hidden');
+        const reto = RETOS_DATA.find(r => r.id === agendaSelectedReto);
+        showToast(`📅 ${reto.emoji} ${reto.titulo} agendado`);
+      },
+      removeAgenda() {
+        const key = `${calYear}-${calMonth}-${agendaSelectedDay}`;
+        delete state.agenda[key];
+        saveState(); renderCalendar();
+        document.getElementById('modal-agenda').classList.add('hidden');
+        showToast('🗑️ Reto eliminado del calendario');
+      },
+      closeAgenda() {
+        document.getElementById('modal-agenda').classList.add('hidden');
+      },
+      openReto(id) {
+        previousScreen = document.querySelector('.screen.active')?.id?.replace('screen-', '') || 'retos';
+        renderRetoDetalle(id);
+      },
+      goBack() { navigate(previousScreen || 'retos'); },
+      aceptarReto() {
+        const id = state.currentRetoId;
+        if (!id || state.retosCompletados.includes(id)) return;
+        const reto = RETOS_DATA.find(r => r.id === id);
+        if (!reto) return;
+        state.retosCompletados.push(id);
+        state.points += reto.pts;
+        state.diasCompletados++;
+        state.streak++;
+        // Mark today as completed in calendar
+        const now = new Date();
+        const dayKey = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`;
+        if (!state.completadoDias) state.completadoDias = {};
+        state.completadoDias[dayKey] = id;
+        saveState();
+        const btn = document.getElementById('btn-aceptar-reto');
+        btn.textContent = '✅ ¡Reto completado!'; btn.className = 'btn-block btn-done'; btn.onclick = null;
+        showToast('🎉 ¡+' + reto.pts + ' puntos ganados!');
+      },
+      handleStepPhoto(event, retoId, stepIndex) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = e => {
+          const dataUrl = e.target.result;
+          const key = retoId + '_' + stepIndex;
+          state.stepPhotos[key] = dataUrl;
+          saveState();
+          const img = document.getElementById('step-photo-' + retoId + '-' + stepIndex);
+          const item = document.getElementById('step-item-' + retoId + '-' + stepIndex);
+          if (img) { img.src = dataUrl; img.classList.add('show'); }
+          if (item) item.classList.add('has-photo');
+          // Update button label
+          const lbl = event.target.closest('.photo-upload-btn');
+          if (lbl) { lbl.childNodes[0].textContent = '📷 Cambiar foto'; }
+          updateCompletarBtn(retoId);
+          showToast('📸 ¡Foto guardada!');
+        };
+        reader.readAsDataURL(file);
+      },
+      handleFamilyPhoto(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = e => {
+          state.familyPhoto = e.target.result;
+          saveState();
+          renderPerfil();
+          showToast('📸 ¡Foto de familia actualizada!');
+        };
+        reader.readAsDataURL(file);
+      },
+      showOnboarding() {
+        renderOnboarding();
+        document.getElementById('modal-onboarding').classList.remove('hidden');
+      },
+      addMemberInput() {
+        const setup = document.getElementById('members-setup');
+        const count = setup.querySelectorAll('.member-row').length;
+        if (count >= 8) { showToast('Máximo 8 integrantes'); return; }
+        const cls = AV_COLORS[count % AV_COLORS.length];
+        const style = AV_STYLES[cls];
+        const div = document.createElement('div');
+        div.className = 'member-row';
+        div.innerHTML = `<div class="av-badge" style="${style}">${count + 1}</div>
+      <input class="form-input member-input" type="text" placeholder="Nombre del integrante" maxlength="20"/>`;
+        setup.appendChild(div);
+      },
+      saveOnboarding() {
+        const name = document.getElementById('input-family-name').value.trim();
+        if (!name) { showToast('Por favor ingresa el nombre de la familia'); return; }
+        const inputs = document.querySelectorAll('.member-input');
+        const members = [...inputs].map(i => i.value.trim()).filter(Boolean);
+        if (members.length === 0) { showToast('Agrega al menos un integrante'); return; }
+        state.familyName = name;
+        state.members = members;
+        state.onboardingDone = true;
+        saveState();
+        document.getElementById('modal-onboarding').classList.add('hidden');
+        renderHome();
+        if (!state.surveyDone) {
+          App.showSurvey();
+        } else {
+          showToast('✅ ¡Familia guardada!');
+        }
+      },
+      editFamilyName() {
+        App.showOnboarding();
+      },
+      showSurvey() {
+        renderSurvey();
+        document.getElementById('modal-encuesta').classList.remove('hidden');
+      },
+      addSurveyMemberInput() {
+        const setup = document.getElementById('survey-members-setup');
+        const count = setup.querySelectorAll('.member-row').length;
+        if (count >= 8) { showToast('Máximo 8 integrantes'); return; }
+        const cls = AV_COLORS[count % AV_COLORS.length];
+        const style = AV_STYLES[cls];
+        const div = document.createElement('div');
+        div.className = 'member-row';
+        div.innerHTML = `<div class="av-badge" style="${style}">${count + 1}</div>
+      <input class="form-input survey-member-input" type="text" placeholder="Nombre del integrante" maxlength="20"/>`;
+        setup.appendChild(div);
+      },
+      saveSurvey() {
+        const nombreFamiliaEl = document.getElementById('survey-nombre-familia');
+        if (!nombreFamiliaEl.value.trim()) {
+          showToast('Por favor ingresa el nombre de la familia');
+          nombreFamiliaEl.focus();
+          return;
+        }
+        const members = getSurveyMembers();
+        if (members.length === 0) { showToast('Agrega al menos un integrante'); return; }
+
+        const required = ['nombre', 'correo', 'telefono', 'ciudad'];
+        for (const f of required) {
+          const el = document.getElementById('survey-' + f);
+          if (!el.value.trim()) {
+            showToast('Por favor completa los campos obligatorios (*)');
+            el.focus();
+            return;
+          }
+        }
+        const data = {};
+        SURVEY_FIELDS.forEach(f => {
+          data[f] = document.getElementById('survey-' + f).value.trim();
+        });
+        data['integrantes'] = members.join(', ');
+        state.surveyData = data;
+        state.surveyDone = true;
+        state.familyName = data['nombre-familia'];
+        state.members = members;
+        saveState();
+        document.getElementById('modal-encuesta').classList.add('hidden');
+        renderHome();
+        showToast('✅ ¡Encuesta guardada, gracias!');
+      },
+      resetData() {
+        if (confirm('¿Reiniciar todo el progreso? Esta acción no se puede deshacer.')) {
+          localStorage.removeItem('cr_v2');
+          state = { ...DEFAULT_STATE };
+          saveState();
+          navigate('home');
+          setTimeout(() => App.showOnboarding(), 300);
+          showToast('🔄 Progreso reiniciado');
+        }
+      }
+    };
+
+    // ── INIT ──
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.nav-item[data-nav]').forEach(btn => btn.addEventListener('click', () => navigate(btn.dataset.nav)));
+      document.querySelectorAll('.link-btn[data-nav]').forEach(btn => btn.addEventListener('click', () => navigate(btn.dataset.nav)));
+      document.getElementById('reto-filters')?.addEventListener('click', e => {
+        const tab = e.target.closest('.filter-tab'); if (!tab) return;
+        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active'); activeFilter = tab.dataset.filter; renderRetos();
+      });
+      document.getElementById('modal-agenda').addEventListener('click', e => {
+        if (e.target === document.getElementById('modal-agenda'))
+          document.getElementById('modal-agenda').classList.add('hidden');
+      });
+      // Close modal on overlay click
+      document.getElementById('modal-onboarding').addEventListener('click', e => {
+        if (e.target === document.getElementById('modal-onboarding') && state.onboardingDone)
+          document.getElementById('modal-onboarding').classList.add('hidden');
+      });
+      document.getElementById('modal-encuesta').addEventListener('click', e => {
+        if (e.target === document.getElementById('modal-encuesta') && state.surveyDone)
+          document.getElementById('modal-encuesta').classList.add('hidden');
+      });
+      document.getElementById('survey-members-setup').addEventListener('input', e => {
+        if (e.target.classList.contains('survey-member-input')) updateSurveyPersonSelects();
+      });
+      renderHome();
+      if (!state.onboardingDone) { App.showOnboarding(); }
+      else if (!state.surveyDone) { App.showSurvey(); }
+    });
+  </script>
+</body>
+
+</html>
